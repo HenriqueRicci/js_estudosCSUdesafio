@@ -118,10 +118,13 @@ fetch(`https://desafiotecnico314159265.free.beeceptor.com`, {
     headers: {
         'Content-Type': 'Application/json'
     },
-}).then((response) => {
-    console.log(typeof response);
-    console.log(response)
-    return response.json()
-}).then((data) => {
-    console.log(data)
+}).then((response) => response.json())
+.then((dadosJson) => {
+    dadosJson.transacoes.forEach(transacao => {
+        const dataTransacao = transacao.dataHora
+        console.log (dataTransacao)
+        const numeroDoCartao = transacao.numeroCartao
+        console.log (numeroDoCartao)
+        
+    })
 })

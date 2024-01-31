@@ -10,5 +10,5 @@ async function TransacaoAPI () {
     console.log(transacoes)
 }
 
-TransacaoAPI ();
+
 
