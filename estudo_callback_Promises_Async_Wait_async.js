@@ -121,9 +121,7 @@ fetch(`https://desafiotecnico314159265.free.beeceptor.com`, {
 }).then((response) => response.json())
 .then((dadosJson) => {
     dadosJson.transacoes.forEach(transacao => {
-        const dataTransacao = transacao.dataHora
         console.log (dataTransacao)
-        const numeroDoCartao = transacao.numeroCartao
         console.log (numeroDoCartao)
         
     })
