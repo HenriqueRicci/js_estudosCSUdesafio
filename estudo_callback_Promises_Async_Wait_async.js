@@ -112,8 +112,8 @@ console.log ('Passar na frete') */  //mostrando novamente como funciona em javas
 
 // um exemplo utilizado na realidade. 
 
-
-fetch(`https://desafiotecnico314159265.free.beeceptor.com`, {
+/* 
+fetch(`https://desafiotecnico314159265.free.beeceptor.com/`, {
     method: 'GET',
     headers: {
         'Content-Type': 'Application/json'
@@ -121,8 +121,6 @@ fetch(`https://desafiotecnico314159265.free.beeceptor.com`, {
 }).then((response) => response.json())
 .then((dadosJson) => {
     dadosJson.transacoes.forEach(transacao => {
-        console.log (dataTransacao)
-        console.log (numeroDoCartao)
-        
+        console.log (transacao)
     })
-})
+}) */
