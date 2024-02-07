@@ -1,7 +1,6 @@
 
 const apiCsu = 'https://run.mocky.io/v3/c1db645f-1e3e-4dce-add5-62f6657f1df6';
 
-
 async function apiData () {
     const response = await fetch (apiCsu, {
         method: 'GET',
@@ -14,9 +13,7 @@ async function apiData () {
 
     transacoes.forEach(transacao => {
         const dataFormatada = formatarData(transacao.dataHora)
-        const cartaoFormatada = formatarCartao(transacao.numeroCartao)
         console.log(dataFormatada)
-        console.log(cartaoFormatada)
     })
  } 
     // função criada para validar a data
@@ -74,8 +71,7 @@ async function apiData () {
   } 
     // Etapa onde parei, tentando converter os dados da tabela hexadecimal
     function formatarCartao (cartao) {
-        const asciiCartao = toASCII(cartao)
-        return asciiCartao
+ 
     }
 
   apiData()
