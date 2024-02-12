@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "ebcdic-ascii": "^1.1.3"
+  },
+  "type": "module",
+  "name": "arquivosnovosdesafiocsu",
+  "version": "1.0.0",
+  "main": "desafioCsu.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node desafioCsu.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
