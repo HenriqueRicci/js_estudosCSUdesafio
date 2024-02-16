@@ -14,12 +14,40 @@ async function dadosApi () {
     const transacoes = date.transacoes;
 
     await transacoes.forEach(transacao => {
-        const dataTransacao = validateDate(transacao.dataHora)
-        const cardTransacao = validateCardNumber(transacao.numeroCartao)
-        const enigmaFormatado = enigmaValueName(transacao.nomePortador, transacao.valorTransacao)
-        const enigmaDaApi = enigmaAPI(transacao.enigmaEBCDIC)
-        console.log (enigmaDaApi)
-    })
+            const dataTransacao = validateDate(transacao.dataHora);
+            const cardTransacao = validateCardNumber(transacao.numeroCartao);
+            const enigmaApiTransacao = enigmaApi(transacao.enigmaEBCDIC)
+            const enigmaValorNome = enigmaValueName(transacao.nomePortador, transacao.valorTransacao)
+
+            let motivoRecusa = "";
+
+            if (!dataTransacao){
+                motivoRecusa += "Data inválida: ";
+            }
+            if (!cardTransacao) {
+                motivoRecusa += "Soma dos dígitos finais do cartão não resulta em 11; ";
+            }
+            if (enigmaApiTransacao === "Inválido") {
+                motivoRecusa += "Erro na conversão EBCDIC para ASCII; ";
+            }
+            if (enigmaValorNome !== enigmaApiTransacao) {
+                motivoRecusa += "Valores EBCDIC não correspondem; ";
+            }
+    
+            transacao.aprovada = dataTransacao && cardTransacao && enigmaApiTransacao !== "Erro" && enigmaValorNome === enigmaApiTransacao;
+            transacao.motivoRecusa = motivoRecusa;
+
+    });
+
+    transacoes.forEach(transacao => {
+        console.log("Número do cartão: ", transacao.numeroCartao);
+        console.log("Nome do portador: ", transacao.nomePortador);
+        console.log("Valor da transação: ", transacao.valorTransacao);
+        console.log("Data da transação: ", transacao.dataHora);
+        console.log("Transação aprovada: ", transacao.aprovada ? "Sim" : "Não");
+        console.log("Motivo da recusa: ", transacao.motivoRecusa || "");
+        console.log("\n");
+    });
 }
 
 function validateDate(dataApi) {
@@ -69,36 +97,26 @@ function validateCardNumber (cardNumber) {
     const digitTwo = parseInt(twoNumbers.charAt(1));
     const soma = digitOne + digitTwo;
 
-    return soma === 11
+    return soma === 11;
 }
 
 function enigmaValueName(nomeUsuario, valorTransacao) {
     const separarNome = nomeUsuario.split(" ");
     const primeiroNome = separarNome[0];
-    const valorSemPonto = valorTransacao.toString().replace(".", "");
+    const valorFormatado = valorTransacao.toFixed(2); 
+    const valorSemPonto = valorFormatado.replace(".", "");
     const enigmaCompra = valorSemPonto + primeiroNome;
-    return enigmaCompra
-}
+    return enigmaCompra;
+} 
 
-function enigmaAPI(enigma) {
-    const converter = new EBCDIC("0037");
-    // Verifica se o código EBCDIC possui um número ímpar de caracteres
-    if (enigma.length % 2 !== 0) {
-        return false;
+function enigmaApi (enigma) {
+    const converter = new EBCDIC('0037');
+    try {
+        const enigmaConvertido = converter.toASCII(enigma);
+        return enigmaConvertido;
+    } catch {
+        return "Inválido";
     }
-
-    let enigmaConvertido = "";
-    for (let i = 0; i < enigma.length; i += 2) {
-        const byte = enigma.slice(i, i + 2);
-        const asciiChar = converter.toASCII(byte);
-        // Verifica se o código EBCDIC é inválido
-        if (asciiChar === false) {
-            return false;
-        }
-        enigmaConvertido += asciiChar;
-    }
-
-    return enigmaConvertido;
 }
 
 dadosApi ()
