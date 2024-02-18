@@ -22,13 +22,13 @@ async function callApi () {
         let motivoRecusa = "";
 
         if (!cardValidation) {
-            motivoRecusa += " Soma do final do cartão não resulta em 11; ";
+            motivoRecusa += " Soma do final do cartão não resulta em 11;  ";
         }
         if (!dateValidation) {
-            motivoRecusa += " A data da transação é inválida; ";
+            motivoRecusa += " A data da transação é inválida;  ";
         }
-        if (!puzzleValidation){
-            motivoRecusa += " Campo EnigmaEBCDIC inválido; ";
+        if (!puzzleValidation) {
+            motivoRecusa += " Campo EnigmaEBCDIC inválido;  ";
         }
 
         transaction.aprovada = cardValidation && dateValidation && puzzleValidation;
@@ -57,8 +57,8 @@ function validateCard (cardNumber){
     const converter = new EBCDIC("0037");
     const cardFormat = converter.toASCII(cardNumber);
     const lastDigits = cardFormat.slice(-2);
-    const numberOne = parseInt(lastDigits.charAt(0));
-    const numberTwo = parseInt(lastDigits.charAt(1));
+    const numberOne = parseInt(lastDigits[0]);
+    const numberTwo = parseInt(lastDigits[1]);
     const soma = numberOne + numberTwo;
     return soma === 11;
 }
