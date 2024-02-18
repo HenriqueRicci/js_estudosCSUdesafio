@@ -4,6 +4,7 @@ const { isValid, parseISO } = require("date-fns");
 
 
 async function callApi () {
+    try{
     const response = await fetch(api, {
         method: 'GET',
         headers: {
@@ -12,7 +13,43 @@ async function callApi () {
     });
     const data = await response.json();
     const transactions = data.transacoes;
-    console.log(transactions)
+    
+
+    transactions.forEach(transaction => {
+        const cardValidation = validateCard(transaction.numeroCartao);
+        const dateValidation = validateDate(transaction.dataHora);
+        const puzzleValidation = puzzleApi(transaction.enigmaEBCDIC, transaction.valorTransacao, transaction.nomePortador);
+        let motivoRecusa = "";
+
+        if (!cardValidation) {
+            motivoRecusa += " Soma do final do cartão não resulta em 11; ";
+        }
+        if (!dateValidation) {
+            motivoRecusa += " A data da transação é inválida; ";
+        }
+        if (!puzzleValidation){
+            motivoRecusa += " Campo EnigmaEBCDIC inválido; ";
+        }
+
+        transaction.aprovada = cardValidation && dateValidation && puzzleValidation;
+        transaction.motivoRecusa = motivoRecusa;
+    });
+
+    transactions.forEach(transaction =>{
+        console.log("numeroCartao", transaction.numeroCartao);
+        console.log("nomePortador", transaction.nomePortador);
+        console.log("valorTransacao", transaction.valorTransacao);
+        console.log("dataHora", transaction.dataHora);
+        console.log("enigmaEBCDIC", transaction.enigmaEBCDIC);
+        console.log("statusTransação:", transaction.aprovada ? "APROVADA" : "REJEITADA");
+        if (transaction.motivoRecusa){
+           console.log("motivoRecusa:", transaction.motivoRecusa);
+        } 
+        console.log('\n');
+    });
+    } catch (error){
+        console.error("Erro ao chamar API");
+    }
 }
 
 
@@ -49,3 +86,4 @@ function puzzleApi (enigmaEBCDIC, valueTransaction, nameBearer){
     return transactionEBCDIC === enigmaASCII
 }
 
+callApi()
