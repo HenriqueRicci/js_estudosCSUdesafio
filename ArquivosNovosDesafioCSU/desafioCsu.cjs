@@ -34,7 +34,7 @@ async function dadosApi () {
                 motivoRecusa += "Valores EBCDIC não correspondem; ";
             }
     
-            transacao.aprovada = dataTransacao && cardTransacao && enigmaApiTransacao !== "Erro" && enigmaValorNome === enigmaApiTransacao;
+            transacao.aprovada = dataTransacao && cardTransacao && enigmaApiTransacao !== "Inválido" && enigmaValorNome === enigmaApiTransacao;
             transacao.motivoRecusa = motivoRecusa;
 
     });
