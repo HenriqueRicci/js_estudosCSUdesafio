@@ -93,8 +93,8 @@ function validateCardNumber (cardNumber) {
     const converter = new EBCDIC("0037");
     let cardFormart = converter.toASCII(cardNumber);
     const twoNumbers = cardFormart.slice(-2);
-    const digitOne = parseInt(twoNumbers.charAt(0));
-    const digitTwo = parseInt(twoNumbers.charAt(1));
+    const digitOne = parseInt(twoNumbers[0]);
+    const digitTwo = parseInt(twoNumbers[1]);
     const soma = digitOne + digitTwo;
 
     return soma === 11;
