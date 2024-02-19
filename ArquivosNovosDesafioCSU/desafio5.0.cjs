@@ -1,10 +1,11 @@
-const apiCsu = "https://run.mocky.io/v3/c1db645f-1e3e-4dce-add5-62f6657f1df6";
+const apiCsu = "https://desafiotecnico314159265.free.beeceptor.com";
 const { parseISO, isValid } = require("date-fns");
 const EBCDIC = require("ebcdic-ascii").default
 const converter = new EBCDIC("0037")
 
 
 async function chamadaApi() {
+    try {
     resposta = await fetch(apiCsu, {
         method: "GET",
         headers: {
@@ -47,6 +48,9 @@ async function chamadaApi() {
         }
         console.log("\n");
     })
+    } catch {
+        console.log("Erro ao chamar a API");
+    }
 }
 
 function validarDataHora(dataHora) {
@@ -68,7 +72,7 @@ function validarEnigma(enigmaApiEBCDIC, valorTransacao, nomePortador) {
     try {
         enigma = converter.toASCII(enigmaApiEBCDIC);
     } catch {
-        enigma = "invalido"
+        enigma = "invalido";
     }
     const valor = valorTransacao.toFixed(2);
     const valorSemPonto = valor.replace(".", "");
