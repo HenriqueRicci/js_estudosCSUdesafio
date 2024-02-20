@@ -4,7 +4,7 @@ const EBCDIC = require("ebcdic-ascii").default
 const converter = new EBCDIC("0037")
 
 async function chamadaAPI() {
-   try { 
+    try {
         const response = await fetch(api, {
             method: "GET",
             headers: {
@@ -15,7 +15,7 @@ async function chamadaAPI() {
         const dados = await response.json();
         const transacoes = dados.transacoes;
 
-        transacoes.forEach(transacao =>{
+        transacoes.forEach(transacao => {
             validarTransacao(transacao);
             exibirTransacoes(transacao);
         });
@@ -24,8 +24,8 @@ async function chamadaAPI() {
         console.log("Erro ao chamar a api");
         return
     };
- 
-   
+
+
 }
 
 function validarDataHora(dataHora) {
@@ -49,7 +49,7 @@ function validarCartao(numeroCartao) {
     return somaDigitos === 11;
 }
 
-function validarEnigma (enigmaEBCDIC, valorTransacao, nomePortador){
+function validarEnigma(enigmaEBCDIC, valorTransacao, nomePortador) {
     let converterEnigma;
 
     try {
@@ -60,7 +60,7 @@ function validarEnigma (enigmaEBCDIC, valorTransacao, nomePortador){
 
     const valorString = valorTransacao.toFixed(2);
     const valorSemPonto = valorString.replace(".", "");
-    
+
     const separarNome = nomePortador.split(" ");
     const primeiroNome = separarNome[0];
 
@@ -69,7 +69,7 @@ function validarEnigma (enigmaEBCDIC, valorTransacao, nomePortador){
 
 }
 
-function validarTransacao (transacao) {
+function validarTransacao(transacao) {
     const dataHoraValida = validarDataHora(transacao.dataHora);
     const cartaoValido = validarCartao(transacao.numeroCartao);
     const enigmaValido = validarEnigma(transacao.enigmaEBCDIC, transacao.valorTransacao, transacao.nomePortador);
@@ -90,7 +90,7 @@ function validarTransacao (transacao) {
     transacao.motivoRecusa = motivoRecusa.join("; ");
 }
 
-function exibirTransacoes (transacao) {
+function exibirTransacoes(transacao) {
     console.log("numeroCartao: ", transacao.numeroCartao);
     console.log("nomePortador: ", transacao.nomePortador);
     console.log("valorTransacao: ", transacao.valorTransacao);
