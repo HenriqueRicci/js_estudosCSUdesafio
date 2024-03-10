@@ -29,12 +29,14 @@ async function chamadaApi () {
 }
 
 // Transforma a data retornada da API em um object do tipo "Date" e depois valida se o DATE é valido
+// Biblioteca utilizada: date-fns
 function validarDataHora (dataTransacao) {
     const formatarData =  parseISO(dataTransacao);
     return isValid(formatarData);
 }
 
 // Pega os ultimos números do cartão e verifica se a soma deles resulta em 11
+// Biblioteca utilizada: ebcdic-ascii
 function validarCartao (numeroCartao) {
     const formatarCartao = converter.toASCII(numeroCartao);
     const finalCartao = formatarCartao.slice(-2);
@@ -46,7 +48,8 @@ function validarCartao (numeroCartao) {
 
 // Converte o enigma EBCDIC retornado da API em ASCII;
 // Pega o primeiro nome do usuário e o valor da transação;
-// Compara o enigma convertido com o valor da transação + nome;
+// Compara o enigma convertido com o valor da transação + nome 
+// Biblioteca utilizada: ebcdic-ascii
 function validarEnigma (enigmaEBCDIC, valorTransacao, Nome) {
 
     let converterEnigma;
